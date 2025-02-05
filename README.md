@@ -28,13 +28,6 @@ Key steps:
 
 After processing, the transformed data is saved back to Google Cloud Storage in the **processed_data** folder, ready for further analysis or use by other systems. The data is kept in Parquet format to continue optimizing storage space.
 
-### 4. (Optional) Future Steps
-
-The pipeline can be extended in the future with the following features:
-- **Data Transformation with dbt**: dbt can be used for advanced data transformations in the pipeline.
-- **Big Data Analysis with Google BigQuery**: BigQuery can be integrated to perform scalable SQL-based analysis on the data.
-- **Orchestration with Apache Airflow**: Apache Airflow can be used for orchestrating and scheduling the pipeline, enabling automated data workflows.
-
 ## Technologies Used
 
 - **Google Cloud Storage (GCS)**: GCS is used for storing the raw and processed data. The free-tier storage in GCS is utilized to minimize costs.
