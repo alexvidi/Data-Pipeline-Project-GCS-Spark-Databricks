@@ -8,7 +8,7 @@ The pipeline is divided into the following stages:
 
 ### 1. Data Ingestion
 
-Data is ingested from a public API (for example, DummyJSON) and uploaded to Google Cloud Storage (GCS). GCS is used to store raw data, and the free tier is utilized to minimize costs. The data is stored in **Parquet format** for optimized storage, ensuring efficient read/write operations. This format is chosen due to its compact size and the ease with which Spark can process it.
+Data is ingested from a public API and uploaded to Google Cloud Storage (GCS). GCS is used to store raw data, and the free tier is utilized to minimize costs. The data is stored in **Parquet format** for optimized storage, ensuring efficient read/write operations. This format is chosen due to its compact size and the ease with which Spark can process it.
 
 Key steps:
 - Data is fetched from the public API.
