@@ -104,7 +104,7 @@ ORDER BY user_count DESC;
 - Integrate **Power BI** for data visualization
 
 ##  About the Author
-[Alexandre Vidal De Paolol] | 
+[Alexandre Vidal De Palol] | 
 
 ---
 
