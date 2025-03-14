@@ -1,0 +1,9 @@
+{
+    "data_folder": "data",
+    "api_urls": {
+        "products": "https://dummyjson.com/products",
+        "users": "https://dummyjson.com/users",
+        "carts": "https://dummyjson.com/carts"
+    },
+    "gcs_bucket": "data-engineering-bucket-alexvidi"
+}

@@ -1,61 +1,110 @@
-# Data Pipeline: GCS, Spark, and Databricks
+# End-to-End Data Pipeline with Databricks, Google Cloud Storage, and Spark
 
-This project demonstrates how to create a scalable data pipeline using Google Cloud Storage (GCS), Apache Spark, and Databricks Community Edition. The pipeline ingests data from a public API, processes it using Spark for transformations, and stores the processed data in GCS. The primary objective is to create a cost-effective, efficient, and scalable data processing pipeline leveraging cloud technologies.
+##  Project Overview
+This project demonstrates a complete **data pipeline** for processing user data using **Databricks**, **Apache Spark**, and **Google Cloud Storage (GCS)**. It covers **data ingestion, transformation, and SQL-based analysis** using PySpark.
 
-## Pipeline Overview
+##  Project Structure
+```
+DATA PIPELINE PROJECT GCS SPARK DATABRICKS/
+│── .vscode/                           # VSCode settings
+│── config/                            # Configuration files
+│   ├── config.json                    # General config
+│   ├── gcp_credentials.json           # GCP service account credentials
+│── data/                               
+│   ├── raw/                           # Raw data files
+│   │   ├── carts.parquet
+│   │   ├── products.parquet
+│   │   ├── users.parquet
+│── images/                            # Screenshots of Databricks setup
+│   ├── databricks/
+│   │   ├── cluster_config.png
+│   │   ├── load_data_spark.png
+│   │   ├── load_google_credentials.png
+│── notebooks_databricks/               
+│   ├── User Data Pipeline in Databricks_ Ingestion, Transformation & SQL Analysis.ipynb
+│── scripts/                            # Python scripts for automation
+│   ├── extract_data.py                 # Data extraction script
+│   ├── upload_to_gcs.py                # Upload script to GCS
+│── venv/                               # Virtual environment
+│── .env                                # Environment variables
+│── .gitignore                          # Git ignored files
+│── README.md                           # Project documentation
+│── requirements.txt                    # Python dependencies
+```
 
-The pipeline is divided into the following stages:
+##  Technologies Used
+- **Google Cloud Storage (GCS)**: Storage for raw data
+- **Apache Spark (Databricks)**: Data processing and transformation
+- **PySpark SQL**: SQL-based querying and analysis
+- **Python**: Scripts for data extraction and ingestion
+- **Parquet**: File format for efficient storage and processing
 
-### 1. Data Ingestion
+##  Workflow
+### 1️. Data Ingestion
+- Extracted data from an external API
+- Stored as **Parquet** files in Google Cloud Storage (GCS)
+- Uploaded via Python scripts (`upload_to_gcs.py`)
 
-Data is ingested from a public API and uploaded to Google Cloud Storage (GCS). GCS is used to store raw data, and the free tier is utilized to minimize costs. The data is stored in **Parquet format** for optimized storage, ensuring efficient read/write operations. This format is chosen due to its compact size and the ease with which Spark can process it.
+### 2️. Data Processing with Spark (Databricks)
+- Loaded data from GCS into a **Databricks Notebook**
+- Configured **Google Cloud credentials** for secure access
+- Applied **PySpark transformations** for data cleaning and enrichment
 
-Key steps:
-- Data is fetched from the public API.
-- The data is stored in a **GCS bucket**.
-- Files are saved in **Parquet format** to optimize storage space and processing time.
+### 3️. SQL Analysis with Spark SQL
+- Created SQL tables from DataFrames
+- Executed SQL queries for analysis
+- Visualized transformed data in Databricks
 
-### 2. Data Processing with Apache Spark on Databricks
+## Setup & Execution
+### 1️. Prerequisites
+- **Google Cloud SDK** installed and authenticated
+- Databricks Community Edition account
+- Python **3.x** installed with dependencies from `requirements.txt`
 
-Once the data is ingested into GCS, Apache Spark is used to process and transform the data. Apache Spark is an open-source unified analytics engine for big data processing, and it allows the handling of large datasets efficiently. The processing happens in **Databricks Community Edition**, which provides a free platform for running Spark workloads.
+### 2️. Run the Pipeline
+#### 🔹 Step 1: Configure GCP Authentication
+```sh
+export GOOGLE_APPLICATION_CREDENTIALS=config/gcp_credentials.json
+```
 
-Key steps:
-- Data is read from **GCS** using Spark.
-- Transformations and data cleaning are performed using **PySpark**.
-- The processed data is stored back in **GCS**.
+#### 🔹 Step 2: Upload Data to GCS
+```sh
+python scripts/upload_to_gcs.py
+```
 
-### 3. Data Storage in GCS
+#### 🔹 Step 3: Load & Process Data in Databricks
+- Open the **Databricks Notebook** (`notebooks_databricks/...ipynb`)
+- Configure Spark with GCP credentials
+- Run **PySpark transformations** and SQL queries
 
-After processing, the transformed data is saved back to Google Cloud Storage in the **processed_data** folder, ready for further analysis or use by other systems. The data is kept in Parquet format to continue optimizing storage space.
+##  Sample Query in Databricks
+```sql
+SELECT age, gender, COUNT(*) as user_count
+FROM users
+GROUP BY age, gender
+ORDER BY user_count DESC;
+```
 
-## Technologies Used
+##  Screenshots
+| Screenshot | Description |
+|------------|-------------|
+| ![Cluster Setup](images/databricks/cluster_config.png) | Databricks cluster setup |
+| ![Load Credentials](images/databricks/load_google_credentials.png) | Loading GCP credentials |
+| ![Load Data](images/databricks/load_data_spark.png) | Loading data into Spark |
 
-- **Google Cloud Storage (GCS)**: GCS is used for storing the raw and processed data. The free-tier storage in GCS is utilized to minimize costs.
-- **Apache Spark (Databricks Community Edition)**: Spark is used for processing large-scale datasets in a distributed environment. Databricks Community Edition is used to run Spark jobs without incurring additional costs.
-- **Python & PySpark**: Python is used to script the data pipeline, with PySpark being utilized for distributed data processing.
-- **Parquet**: Parquet is the format used to store the data in GCS due to its columnar storage format and compression efficiency, making it well-suited for analytical workloads.
+##  Key Takeaways
+- Successfully **ingested, transformed, and analyzed** data using Spark
+- Applied **Databricks Notebooks** for end-to-end data pipeline execution
+- Leveraged **SQL queries** for structured data analysis
+- Stored data in **GCS and Parquet** for optimized storage & retrieval
 
-## Project Structure
+##  Next Steps
+- Implement **Airflow** for pipeline orchestration
+- Deploy the pipeline to **Azure Databricks** for cloud-based execution
+- Integrate **Power BI** for data visualization
 
-The project is structured as follows:
+##  About the Author
+[Alexandre Vidal De Paolol] | 
 
-- `ingest_data.py`: A Python script that handles the ingestion of data from the public API and uploads it to GCS.
-- `process_data.py`: A Python script that reads the raw data from GCS, processes it with Spark, and writes the processed data back to GCS.
-- `README.md`: This file, containing details about the project and how to use it.
-- `/data`: A folder containing the raw data files (for local testing).
-- `/notebooks`: Databricks notebooks containing Spark code for data processing.
-
-## Setup and Usage
-
-1. **Google Cloud Storage Setup**: Create a GCS bucket to store the raw and processed data. Update the script with your GCS bucket name.
-2. **Databricks Setup**: Use Databricks Community Edition to process the data with Apache Spark. You can use the Databricks notebooks for running Spark jobs.
-3. **Run the Python Scripts**: 
-   - Run `ingest_data.py` to fetch data from the public API and store it in GCS.
-   - Run `process_data.py` to read, process, and store the data back in GCS.
-4. **Optional**: Add dbt and Google BigQuery for advanced transformations and data analysis.
-
-## Conclusion
-
-This project showcases how to build a simple yet scalable data pipeline that ingests, processes, and stores data in a cloud environment using open-source tools. The focus is on cost-effective solutions, using free-tier resources like Google Cloud Storage and Databricks Community Edition. The project can easily be extended with more advanced features like orchestration, advanced data transformation, and big data analysis.
-
+---
 

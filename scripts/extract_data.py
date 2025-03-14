@@ -1,45 +1,58 @@
 import os
 import requests
 import pandas as pd
+import json
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Load configuration from JSON
+CONFIG_PATH = "config/config.json"
+with open(CONFIG_PATH, "r") as config_file:
+    config = json.load(config_file)
+
+# Define constants
+DATA_FOLDER = config.get("data_folder", "data")
+API_URLS = config.get("api_urls", {})
 
 def create_data_folder():
-    """Creates the 'data' directory if it does not exist."""
-    os.makedirs("data", exist_ok=True)
+    """Creates the data directory if it does not exist."""
+    os.makedirs(DATA_FOLDER, exist_ok=True)
+    print(f"Data folder checked/created: {DATA_FOLDER}")
 
 def fetch_data(url):
-    """Makes a GET request to the given URL and returns the JSON response."""
-    response = requests.get(url)
-    if response.status_code == 200:
+    """Fetches data from the given API URL."""
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
         return response.json()
-    else:
-        print(f"Error fetching data from {url}: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"ERROR: Fetching data from {url}: {e}")
         return None
 
 def save_to_parquet(data, filename):
-    """Saves the given data as a Parquet file in the 'data' directory."""
-    df = pd.DataFrame(data)
-    file_path = f"data/{filename}.parquet"
-    df.to_parquet(file_path, engine="pyarrow", index=False)
-    print(f" Data saved to: {file_path}")
+    """Saves data to a Parquet file."""
+    if data:
+        df = pd.DataFrame(data)
+        file_path = os.path.join(DATA_FOLDER, f"{filename}.parquet")
+        df.to_parquet(file_path, engine="pyarrow", index=False)
+        print(f"Data saved to: {file_path}")
+    else:
+        print(f"WARNING: No data to save for {filename}")
 
 def main():
-    """Orchestrates the extraction and storage of data."""
-    print(" Starting data extraction...")
-    
+    """Main execution function."""
+    print("Starting data extraction...")
     create_data_folder()
     
-    urls = {
-        "products": "https://dummyjson.com/products",
-        "users": "https://dummyjson.com/users",
-        "carts": "https://dummyjson.com/carts"
-    }
-    
-    for key, url in urls.items():
+    for key, url in API_URLS.items():
+        print(f"Fetching data from {url}")
         data = fetch_data(url)
-        if data:
+        if data and key in data:
             save_to_parquet(data[key], key)
     
-    print(" Data extraction and storage completed.")
+    print("Data extraction and storage completed.")
 
 if __name__ == "__main__":
     main()

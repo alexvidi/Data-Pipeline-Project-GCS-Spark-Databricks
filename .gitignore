@@ -1,0 +1,38 @@
+# Ignore Python virtual environment
+venv/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Ignore IDE configurations
+.vscode/
+*.swp
+*.swo
+
+# Ignore environment variables and credentials
+.env
+config/gcp_credentials.json
+
+# Ignore logs and temporary files
+logs/
+*.log
+tmp/
+*.tmp
+
+# Ignore data files (optional)
+data/raw/
+*.parquet
+
+# Ignore compiled Python files
+*.egg-info/
+dist/
+build/
+
+# Ignore Databricks Notebooks checkpoints
+notebooks_databricks/.ipynb_checkpoints/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+desktop.ini
