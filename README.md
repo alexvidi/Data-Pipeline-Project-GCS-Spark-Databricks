@@ -121,24 +121,13 @@ FROM user_demographics
 GROUP BY age_group, gender
 ORDER BY user_count DESC;
 ```
-
-## Performance Metrics
-- **Processing Speed**: ~1M records/minute
-- **Storage Efficiency**: 60% compression ratio
-- **Query Performance**: Sub-second response for aggregations
-
-## Monitoring & Maintenance
-- Automated error logging
-- Performance metrics tracking
-- Resource utilization monitoring
-
 ## Future Enhancements
 1. Apache Airflow integration for orchestration
 2. Real-time processing capabilities
 3. Advanced analytics with ML models
 4. Power BI dashboard integration
 
-##  Author & Maintainer
+##  Author
 **Alexandre Vidal De Palol**
 
 ## License
